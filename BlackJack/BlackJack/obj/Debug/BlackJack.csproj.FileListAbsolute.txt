@@ -28,3 +28,13 @@ C:\Users\kotem\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.
 C:\Users\kotem\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.csproj.CoreCompileInputs.cache
 C:\Users\kotem\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.exe
 C:\Users\kotem\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.pdb
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\bin\Debug\BlackJack.exe.config
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\bin\Debug\BlackJack.exe
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\bin\Debug\BlackJack.pdb
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.csproj.AssemblyReference.cache
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.Form1.resources
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.Properties.Resources.resources
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.csproj.GenerateResource.cache
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.exe
+C:\Users\Admin\Source\Repos\BlackJack_1\BlackJack\BlackJack\obj\Debug\BlackJack.pdb

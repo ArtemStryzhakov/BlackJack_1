@@ -146,6 +146,7 @@
     <Content Include="Pika\7.PNG" />
     <Content Include="Pika\8.PNG" />
     <Content Include="Pika\9.PNG" />
+    <None Include="Resources\trollface.png" />
     <None Include="Resources\icon_log.ico" />
     <None Include="Resources\player.PNG" />
     <None Include="Resources\bot.PNG" />
