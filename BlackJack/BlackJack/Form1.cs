@@ -15,7 +15,7 @@ namespace BlackJack
         Start_form startForm = new Start_form();
 
         public static Label lbl, lbl_players, lbl_player, lbl_bot;
-        PictureBox card_one, card_two, card_third, card_fourth, extra_card, extra_card_2;
+        PictureBox card_one, card_two, card_third, card_fourth, extra_card, extra_card_2, koloda;
         Button take_card, pass, giveUp, start_game;
         List<string> listOfcards, listOffiles;
         List<int> listOfpoints;
@@ -113,6 +113,9 @@ namespace BlackJack
                 Location = new Point(150, 300),
                 BackgroundImage = Properties.Resources.player
             };
+            extra_card.AllowDrop = false;
+            extra_card.DragDrop += Extra_card_DragDrop;
+            extra_card.DragEnter += GovnoKoloda_DragEnter;
             extra_card.SizeMode = PictureBoxSizeMode.StretchImage;
 
             extra_card_2 = new PictureBox()
@@ -122,6 +125,17 @@ namespace BlackJack
                 BackgroundImage = Properties.Resources.bot
             };
             extra_card_2.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            koloda = new PictureBox()
+            {
+                Size = new Size(150, 120),
+                Location = new Point(315, 300),
+                BackgroundImage = Properties.Resources.trollface
+            };
+            koloda.MouseDown += GovnoKoloda_MouseDown;
+            koloda.DragEnter += GovnoKoloda_DragEnter;
+            koloda.AllowDrop = false;
+            koloda.SizeMode = PictureBoxSizeMode.StretchImage;
 
             start_game = new Button()
             {
@@ -135,7 +149,7 @@ namespace BlackJack
 
             //----------------Main Buttons----------------
 
-            take_card = new Button()
+            /*take_card = new Button()
             {
                 Text = "Take Cards",
                 Size = new Size(150, 50),
@@ -143,7 +157,7 @@ namespace BlackJack
                 Font = new Font(Font.FontFamily, 15),
                 BackColor = Color.FromArgb(102, 204, 0)
             };
-            take_card.Click += Take_card_Click;
+            take_card.Click += Take_card_Click;*/
 
             pass = new Button()
             {
@@ -165,6 +179,8 @@ namespace BlackJack
             };
             giveUp.Click += GiveUp_Click;
 
+            this.Controls.Add(koloda);
+
             this.Controls.Add(card_one);
             this.Controls.Add(card_two);
             this.Controls.Add(card_third);
@@ -176,16 +192,107 @@ namespace BlackJack
             this.Controls.Add(start_game);
             this.Controls.Add(lbl_bot);
             this.Controls.Add(lbl_player);
+            this.GiveFeedback += Form1_GiveFeedback;
+        }
+
+        private void Form1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            e.UseDefaultCursors = false;
+        }
+
+        private void Extra_card_DragDrop(object sender, DragEventArgs e)
+        {
+            rnd = new Random();
+            //sdelaj chtobi karta pojavlalas
+            int file_one = rnd.Next(listOffiles.Count);
+
+            rand_card_one = rnd.Next(listOfcards.Count);
+            extra_card.BackgroundImage = new Bitmap($@"../../{listOffiles[file_one]}/{listOfcards[rand_card_one]}.png");
+
+            int bot_chance = rnd.Next(1, 100);
+
+            if (point_bot <= 10)
+            {
+                if (bot_chance < 100)
+                {
+                    Bot();
+                }
+                else
+                {
+                    card_third.BackgroundImage = Properties.Resources.bot;
+                    card_fourth.BackgroundImage = Properties.Resources.bot;
+                }
+            }
+
+            else if (point_bot > 10)
+            {
+                if (bot_chance < 85)
+                {
+                    Bot();
+                }
+                else
+                {
+                    card_third.BackgroundImage = Properties.Resources.bot;
+                    card_fourth.BackgroundImage = Properties.Resources.bot;
+                }
+            }
+
+            else if (point_bot >= 15)
+            {
+                if (bot_chance < 60)
+                {
+                    Bot();
+                }
+                else
+                {
+                    card_third.BackgroundImage = Properties.Resources.bot;
+                    card_fourth.BackgroundImage = Properties.Resources.bot;
+                }
+            }
+
+            point_player += listOfpoints[rand_card_one];
+            lbl_players.Text = $"{point_player} : ?";
+
+            if (point_bot >= 21)
+            {
+                Win();
+            }
+            else if (point_player >= 21)
+            {
+                Win();
+            }
+        }
+
+        private void GovnoKoloda_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+                e.Effect = DragDropEffects.Move;
+            Bitmap curs = Properties.Resources.bot;
+            curs.MakeTransparent(Color.White);
+            Cursor cur = new Cursor(curs.GetHicon());
+            Cursor.Current = cur;
+        }
+
+        private void GovnoKoloda_MouseDown(object sender, MouseEventArgs e)
+        {
+            PictureBox pb = sender as PictureBox;
+            var img = pb.BackgroundImage;
+            //if (img == null) return;
+            DoDragDrop(img, DragDropEffects.Move);
         }
 
         private void Start_game_Click(object sender, EventArgs e)
         {
+            extra_card.AllowDrop = true;
+            koloda.AllowDrop = true;
+
             card_third.BackgroundImage = Properties.Resources.bot;
             card_fourth.BackgroundImage = Properties.Resources.bot;
+            extra_card.BackgroundImage = Properties.Resources.player;
             extra_card_2.BackgroundImage = Properties.Resources.bot;
 
             start_game.Hide();
-            take_card.Show();
+            //take_card.Show();
             pass.Show();
             giveUp.Show();
 
@@ -235,24 +342,23 @@ namespace BlackJack
                 file_extra_2 = rnd.Next(listOffiles.Count);
                 rand_card_extra = rnd.Next(listOfcards.Count);
                 point_bot += listOfpoints[rand_card_extra];
-            }
-            else
-            {
-                gusj();
-            }
-            
+            }            
         }
 
         private void gusj()
         {
             card_third.BackgroundImage = new Bitmap($@"../../{listOffiles[file_three]}/{listOfcards[rand_card_three]}.png");
             card_fourth.BackgroundImage = new Bitmap($@"../../{listOffiles[file_four]}/{listOfcards[rand_card_four]}.png");
-            
+            extra_card_2.BackgroundImage = new Bitmap($@"../../{listOffiles[file_extra_2]}/{listOfcards[rand_card_extra]}.png");
+
             lbl_players.Text = $"{point_player} : {point_bot}";
-            take_card.Hide();
+            //take_card.Hide();
             pass.Hide();
             giveUp.Hide();
             start_game.Show();
+
+            extra_card.AllowDrop = false;
+            koloda.AllowDrop = false;
         }
 
         private void Pass_Win()
@@ -316,7 +422,7 @@ namespace BlackJack
             }           
         }
 
-        private void Take_card_Click(object sender, EventArgs e)
+        /*private void Take_card_Click(object sender, EventArgs e)
         {
             rnd = new Random();
 
@@ -379,7 +485,7 @@ namespace BlackJack
                 Win();
             }
             
-        }
+        }*/
 
         private void Pass_Click(object sender, EventArgs e)
         {
