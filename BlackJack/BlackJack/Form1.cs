@@ -15,7 +15,7 @@ namespace BlackJack
         Start_form startForm = new Start_form();
 
         public static Label lbl, lbl_players, lbl_player, lbl_bot;
-        PictureBox card_one, card_two, card_third, card_fourth, extra_card, extra_card_2;
+        PictureBox card_one, card_two, card_third, card_fourth, extra_card, extra_card_2, govnoKoloda;
         Button take_card, pass, giveUp, start_game;
         List<string> listOfcards, listOffiles;
         List<int> listOfpoints;
@@ -113,6 +113,9 @@ namespace BlackJack
                 Location = new Point(150, 300),
                 BackgroundImage = Properties.Resources.player
             };
+            extra_card.AllowDrop = true;
+            extra_card.DragDrop += Extra_card_DragDrop;
+            extra_card.DragEnter += GovnoKoloda_DragEnter;
             extra_card.SizeMode = PictureBoxSizeMode.StretchImage;
 
             extra_card_2 = new PictureBox()
@@ -122,6 +125,17 @@ namespace BlackJack
                 BackgroundImage = Properties.Resources.bot
             };
             extra_card_2.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            govnoKoloda = new PictureBox()
+            {
+                Size = new Size(85, 129),
+                Location = new Point(315, 300),
+                BackgroundImage = Properties.Resources.bot
+            };
+            govnoKoloda.MouseDown += GovnoKoloda_MouseDown;
+            govnoKoloda.DragEnter += GovnoKoloda_DragEnter;
+            govnoKoloda.AllowDrop = true;
+            govnoKoloda.SizeMode = PictureBoxSizeMode.StretchImage;
 
             start_game = new Button()
             {
@@ -165,6 +179,8 @@ namespace BlackJack
             };
             giveUp.Click += GiveUp_Click;
 
+            this.Controls.Add(govnoKoloda);
+
             this.Controls.Add(card_one);
             this.Controls.Add(card_two);
             this.Controls.Add(card_third);
@@ -176,6 +192,36 @@ namespace BlackJack
             this.Controls.Add(start_game);
             this.Controls.Add(lbl_bot);
             this.Controls.Add(lbl_player);
+            this.GiveFeedback += Form1_GiveFeedback;
+        }
+
+        private void Form1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+        {
+            e.UseDefaultCursors = false;
+        }
+
+        private void Extra_card_DragDrop(object sender, DragEventArgs e)
+        {
+            //sdelaj chtobi karta pojavlalas
+            Console.WriteLine("mama ja gej");
+        }
+
+        private void GovnoKoloda_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.Bitmap))
+                e.Effect = DragDropEffects.Move;
+            Bitmap curs = Properties.Resources.bot;
+            curs.MakeTransparent(Color.White);
+            Cursor cur = new Cursor(curs.GetHicon());
+            Cursor.Current = cur;
+        }
+
+        private void GovnoKoloda_MouseDown(object sender, MouseEventArgs e)
+        {
+            PictureBox pb = sender as PictureBox;
+            var img = pb.BackgroundImage;
+            //if (img == null) return;
+            DoDragDrop(img, DragDropEffects.Move);
         }
 
         private void Start_game_Click(object sender, EventArgs e)
